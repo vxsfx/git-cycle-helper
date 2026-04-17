@@ -1,0 +1,105 @@
+---
+title: Git diagram
+---
+gitGraph TB:
+
+%% first commit after merge DOES NOT exist, just cus not rendering properlly
+
+
+
+%%%% TAGS
+%% v-0.0.0
+%% pre-alpha
+%% alpha
+%% beta
+%% candidate
+%% release
+
+
+%% v-0.0.0-pa
+
+%% v-1.2.3
+
+%%%% pre alphas of different version increments 
+%% v-2.0.0-pa
+%% v-1.3.0-pa
+%%%% may exist simultaniously
+
+
+%%% multiple pre alphas can exist
+%% one may be just patches
+%% another may be just features
+%%%% depending on what pre-alpha goes forward
+%%%% 
+
+
+%% INIT
+checkout main
+commit initial empty
+branch version 
+commit initial tag: v-0.0.0
+
+%% PRE ALPHAS
+branch v-1.0.0-pa
+commit
+commit
+
+checkout version
+branch v-0.1.0-pa-1
+commit
+
+checkout version
+branch v-0.1.0-pa-2
+commit
+
+%% consolidate and merge branches (Optional) if not single
+%% branch of existing pre-alpha, then merge other-pre-alphas
+checkout v-1.0.0-pa %% major branches take prevelence if to be used
+merge v-0.1.0-pa-2
+commit
+commit
+
+
+%% startAlpha
+checkout version
+merge v-1.0.0-pa
+commit tag: "v-1.0.0-alpha"
+
+%% startFeature
+branch feature-1
+commit
+checkout version
+
+%% startPatch
+branch patch-1
+commit
+checkout version
+
+merge feature-1
+commit
+
+commit tag: "v-1.0.0-beta" %% START BETA
+commit
+commit tag: "v-1.0.0-rc" %%START CANDIDATE
+
+checkout main
+merge version
+commit tag: "release"
+
+
+%%% patch version
+checkout version
+commit tag: "v-1.0.1-beta"
+merge patch-1
+commit tag: "v-1.0.1-rc"
+checkout main
+merge version
+commit tag: "release"
+
+
+checkout version
+branch v-1.1.0-pa
+commit
+commit
+checkout version
+merge v-1.1.0-pa
