@@ -94,15 +94,19 @@ function newVersionNumber {
 ## initialise branches etc...
 ## tags v-0.0.0 on empty commit
 function init {
-    git init -b main
+    is_repo=$(git rev-parse )
+
+    if ! git rev-parse --is-work-tree ; then
+        git init -b main
+        git commit --allow-empty -m "initial empty commit"
+        git branch version
+        git checkout version
+        git tag "v-0.0.0"
+    fi
+
     git config set core.commentString //
     git config set core.editor "nvim -f"
     git config set commit.template $PROGRAM_PATH/templates/git-default-msg
-
-    git commit --allow-empty -m "initial empty commit"
-    git branch version
-    git checkout version
-    git tag "v-0.0.0"
 }
 
 
